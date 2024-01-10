@@ -2,21 +2,26 @@
 
     <h3 class="text-uppercase resume-section-heading mb-4">{{ i18n "projects" }}</h3>
 
-    {{ range .Site.Params.projects.list }}
+    {{ range (sort (where .Site.RegularPages "Type" "projects") .Params.date "desc") }}
+    {{ with .Params }}
     <div class="item mb-3">
         <div class="item-heading row align-items-center mb-2">
             <h4 class="item-title col-12 col-md-6 col-lg-6 mb-2 mb-md-0">{{ .title }}</h4>
-            <div class="item-meta col-12 col-md-6 col-lg-6 text-muted text-left text-md-right">{{ .meta }}</div>
+            <div class="item-meta col-12 col-md-6 col-lg-6 text-muted text-left text-md-right">
+                {{ with .meta }}{{ . }}{{ end }}</div>
         </div>
         <div class="item-content">
-            <p>{{ with .details }}{{ . | markdownify }}{{ end }}</p>
+            <p>{{ with .description }}{{ . | markdownify }}{{ end }}</p>
+            {{ with .taglines }}
             <ul class="resume-list">
-                {{ range .items }}
-                <li>{{ with .details }}{{ . | markdownify }}{{ end }}</li>
+                {{ range . }}
+                <li>{{ . | markdownify }}</li>
                 {{ end }}
             </ul>
+            {{ end }}
         </div>
     </div><!--//item-->
+    {{ end }}
     {{ end }}
 
 </section><!--//project-section-->
